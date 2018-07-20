@@ -15,26 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Form for editing specific news_slider instances.
+ * Form for editing specific news_slider_plus instances.
  *
- * @package   block_news_slider
+ * @package   block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   
  */
 
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * News Slider edit form implementation class.
+ * News Slider Plus edit form implementation class.
  *
- * @package block_news_slider
+ * @package block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    
  */
-class block_news_slider_edit_form extends block_edit_form {
+class block_news_slider_plus_edit_form extends block_edit_form {
 
     /**
-     * Override specific definition to provide news slider instance settings.
+     * Override specific definition to provide News Slider Plus instance settings.
      *
      * @param MoodleQuickForm $mform
      */
@@ -44,41 +44,61 @@ class block_news_slider_edit_form extends block_edit_form {
 
         // Display mode, all news, site news or course news.
         $displaymodeoptions = array(
-                block_news_slider::DISPLAY_MODE_ALL_NEWS    => get_string('displaymodestringall', 'block_news_slider'),
-                block_news_slider::DISPLAY_MODE_SITE_NEWS   => get_string('displaymodestringsite', 'block_news_slider'),
-                block_news_slider::DISPLAY_MODE_COURSE_NEWS => get_string('displaymodestringcourse', 'block_news_slider')
+                block_news_slider_plus::DISPLAY_MODE_ALL_NEWS    => get_string('displaymodestringall', 'block_news_slider_plus'),
+                block_news_slider_plus::DISPLAY_MODE_SITE_NEWS   => get_string('displaymodestringsite', 'block_news_slider_plus'),
+                block_news_slider_plus::DISPLAY_MODE_COURSE_NEWS => get_string('displaymodestringcourse', 'block_news_slider_plus')
         );
 
-        $mform->addElement('text', 'config_bannertitle', get_string('bannertitle', 'block_news_slider'));
-        $mform->setDefault('config_bannertitle', block_news_slider::NEWS_SLIDER_DEFAULT_TITLE_BANNER);
+        $styleoptions = array(  
+                            'Style 1',
+                            'Style 2',
+                            'Style 3',
+                            'Style 4',
+                            'Style 5',
+                        );
+
+        $mform->addElement('text', 'config_bannertitle', get_string('bannertitle', 'block_news_slider_plus'));
+        $mform->setDefault('config_bannertitle', block_news_slider_plus::news_slider_plus_DEFAULT_TITLE_BANNER);
         $mform->setType('config_bannertitle', PARAM_TEXT);
 
-        $mform->addElement('select', 'config_displaymode', get_string('displaymode', 'block_news_slider'), $displaymodeoptions);
-        $mform->setDefault('config_displaymode', block_news_slider::DISPLAY_MODE_ALL_NEWS);
+        $mform->addElement('select', 'config_displaymode', get_string('displaymode', 'block_news_slider_plus'), $displaymodeoptions);
+        $mform->setDefault('config_displaymode', block_news_slider_plus::DISPLAY_MODE_ALL_NEWS);
         $mform->setType('config_displaymode', PARAM_INT);
 
-        $mform->addElement('text', 'config_siteitemstoshow', get_string('siteitemstoshow', 'block_news_slider'));
-        $mform->setDefault('config_siteitemstoshow', block_news_slider::NEWS_SLIDER_DEFAULT_SITE_NEWS_ITEMS);
+        $mform->addElement('select', 'config_sliderstyle', get_string('sliderstyle', 'block_news_slider_plus'), $styleoptions);
+        $mform->setDefault('config_sliderstyle', 'Style 1');
+        $mform->setType('config_sliderstyle', PARAM_INT);
+
+        $mform->addElement('text', 'config_numslides', get_string('numslides', 'block_news_slider_plus'));
+        $mform->setDefault('config_numslides', block_news_slider_plus::news_slider_plus_DEFAULT_NUM_SLIDES); 
+        $mform->setType('config_numslides', PARAM_TEXT);
+
+        $mform->addElement('text', 'config_maincolour', get_string('maincolour', 'block_news_slider_plus'));
+        $mform->setDefault('config_maincolour', block_news_slider_plus::news_slider_plus_DEFAULT_MAIN_COLOUR);
+        $mform->setType('config_maincolour', PARAM_TEXT);
+
+        $mform->addElement('text', 'config_siteitemstoshow', get_string('siteitemstoshow', 'block_news_slider_plus'));
+        $mform->setDefault('config_siteitemstoshow', block_news_slider_plus::news_slider_plus_DEFAULT_SITE_NEWS_ITEMS);
         $mform->setType('config_siteitemstoshow', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_siteitemsperiod', get_string('siteitemsperiod', 'block_news_slider'));
-        $mform->setDefault('config_siteitemsperiod', block_news_slider::NEWS_SLIDER_DEFAULT_SITE_NEWS_PERIOD);
+        $mform->addElement('text', 'config_siteitemsperiod', get_string('siteitemsperiod', 'block_news_slider_plus'));
+        $mform->setDefault('config_siteitemsperiod', block_news_slider_plus::news_slider_plus_DEFAULT_SITE_NEWS_PERIOD);
         $mform->setType('config_siteitemsperiod', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_courseitemstoshow', get_string('courseitemstoshow', 'block_news_slider'));
-        $mform->setDefault('config_courseitemstoshow', block_news_slider::NEWS_SLIDER_DEFAULT_COURSE_NEWS_ITEMS);
+        $mform->addElement('text', 'config_courseitemstoshow', get_string('courseitemstoshow', 'block_news_slider_plus'));
+        $mform->setDefault('config_courseitemstoshow', block_news_slider_plus::news_slider_plus_DEFAULT_COURSE_NEWS_ITEMS);
         $mform->setType('config_courseitemstoshow', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_courseitemsperiod', get_string('courseitemsperiod', 'block_news_slider'));
-        $mform->setDefault('config_courseitemsperiod', block_news_slider::NEWS_SLIDER_DEFAULT_COURSE_NEWS_PERIOD);
+        $mform->addElement('text', 'config_courseitemsperiod', get_string('courseitemsperiod', 'block_news_slider_plus'));
+        $mform->setDefault('config_courseitemsperiod', block_news_slider_plus::news_slider_plus_DEFAULT_COURSE_NEWS_PERIOD);
         $mform->setType('config_courseitemsperiod', PARAM_TEXT);
 
         // Show old site news link yes / no option.
-        $mform->addElement('selectyesno', 'config_showoldnews', get_string('showoldnews', 'block_news_slider'));
+        $mform->addElement('selectyesno', 'config_showoldnews', get_string('showoldnews', 'block_news_slider_plus'));
         $mform->setDefault('config_showoldnews', 0);
 
         // Show slick dot navigation (bullets) on bottom.
-        $mform->addElement('selectyesno', 'config_showdots', get_string('showdots', 'block_news_slider'));
+        $mform->addElement('selectyesno', 'config_showdots', get_string('showdots', 'block_news_slider_plus'));
         $mform->setDefault('config_showdots', 1);
 
     }

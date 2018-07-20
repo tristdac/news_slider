@@ -17,32 +17,29 @@
 /**
  * Version details
  *
- * @package   block_news_slider
+ * @package   block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
  * @copyright
  * @copyright
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   GNU GPL v3 or later
  *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-        'block/news_slider:myaddinstance' => array(
+        'block/news_slider_plus:myaddinstance' => array(
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_SYSTEM,
-                'archetypes' => array('user' => CAP_ALLOW),
-                'clonepermissionsfrom' => 'moodle/my:manageblocks'
+                'archetypes' => array(),
+
         ),
-        'block/news_slider:addinstance' => array(
+        'block/news_slider_plus:addinstance' => array(
                 'riskbitmask' => RISK_SPAM | RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_BLOCK,
                 'archetypes' => array(
-                        'editingteacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW
                 ),
-                'clonepermissionsfrom' => 'moodle/site:manageblocks'
         )
 
 );

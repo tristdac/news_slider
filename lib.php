@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * News slider block helper functions and callbacks.
+ * News Slider Plus block helper functions and callbacks.
  *
- * @package block_news_slider
+ * @package block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
  * @copyright 2017 John Tutchings (Coventry University)
  * @copyright
  *
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license 
  *
  */
 
@@ -30,13 +30,13 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . "/mod/forum/lib.php");
 
-define('NEWS_SLIDER_EXCERPT_LENGTH', 110);
-define('NEWS_SLIDER_SUBJECT_MAX_LENGTH', 30);
-define('NEWS_SLIDER_CACHING_TTL', 300);
+define('news_slider_plus_EXCERPT_LENGTH', 110);
+define('news_slider_plus_SUBJECT_MAX_LENGTH', 30);
+define('news_slider_plus_CACHING_TTL', 300);
 
 $defaultblocksettings = array(
-        'excerptlength' => NEWS_SLIDER_EXCERPT_LENGTH,
-        'subjectmaxlength' => NEWS_SLIDER_SUBJECT_MAX_LENGTH
+        'excerptlength' => news_slider_plus_EXCERPT_LENGTH,
+        'subjectmaxlength' => news_slider_plus_SUBJECT_MAX_LENGTH
 );
 
 /**
@@ -48,8 +48,8 @@ $defaultblocksettings = array(
  *
  * @return array List of news items to show
  */
-function news_slider_get_course_news($course, $getsitenews = false, $sliderconfig = null, &$currenttotalcoursesretrieved = null) {
-    global $USER, $OUTPUT, $COURSE;
+function news_slider_plus_get_course_news($course, $getsitenews = false, $sliderconfig = null, &$currenttotalcoursesretrieved = null) {
+    global $USER, $OUTPUT, $COURSE, $DB, $CFG;
 
     $posttext = '';
 
@@ -104,6 +104,50 @@ function news_slider_get_course_news($course, $getsitenews = false, $sliderconfi
     }
 
     foreach ($discussions as $discussion) {
+        // Set main colour for slides
+        if (($sliderconfig->maincolour === 'random') || (empty($sliderconfig->maincolour))) {
+            // Generate random colour for each discussion
+            $rgbColour = array();
+            //Create a loop.
+            foreach(array('r', 'g', 'b') as $colour){
+                //Generate a random number between 0 and 250.
+                $rgbColour[$colour] = mt_rand(0, 250);
+            }
+            // Set the colour
+            $colour = 'rgba('. implode(",", $rgbColour).', 0.7)';;
+        }
+        else {
+            $colour = $sliderconfig->maincolour;
+        }
+
+        // Count and return the number of comments a post has had
+        $countcomments = $DB->count_records('forum_posts', array('discussion'=>$discussion->id));
+        if ($countcomments > 0) {
+            $commentcount = $countcomments - 1; //Do not include the initial post
+        }
+        else {
+            $commentcount = $countcomments;
+        }
+
+        // Count and return the number of views a post has had
+        $countviews = $DB->count_records('logstore_standard_log', array('component'=>'mod_forum','action'=>'viewed','target'=>'discussion','objectid'=>$discussion->id));
+        $viewcount = $countviews;
+        
+        // Get attached files and images
+        $post = $DB->get_record('forum_posts', array('id' => $discussion->id));
+        list($attachments, $attachedimages) = forum_print_attachments($post, $cm, 'separateimages');
+
+        if ($attachedimages) {
+            $attachedimages_url = str_replace(array('<img src="', '" alt="" />', '<br>', '<br />'), '', $attachedimages);
+        } else { // Use default image if none uploaded
+            $attachedimages_url = $CFG->wwwroot.'/blocks/news_slider_plus/pix/placeholder.jpg';
+        }
+
+        // Split date
+        $created = date('d/m/Y', $discussion->created);
+        $dt = DateTime::createFromFormat('d/m/Y', $created);
+        $created_day = strtoupper($dt->format('j'));
+        $created_month = strtoupper($dt->format('M'));
 
         // Get user profile picture.
 
@@ -121,6 +165,8 @@ function news_slider_get_course_news($course, $getsitenews = false, $sliderconfi
         $newsitems[$discussion->id]['courseid'] = $course->id;
         $newsitems[$discussion->id]['discussion'] = $discussion->discussion;
         $newsitems[$discussion->id]['modified'] = $discussion->modified;
+        $newsitems[$discussion->id]['daycreated'] = $created_day;
+        $newsitems[$discussion->id]['monthcreated'] = $created_month;
         $newsitems[$discussion->id]['author'] = $discussion->firstname . ' ' . $discussion->lastname;
         $newsitems[$discussion->id]['subject'] = $discussion->subject;
         $newsitems[$discussion->id]['message'] = $discussion->message;
@@ -128,6 +174,11 @@ function news_slider_get_course_news($course, $getsitenews = false, $sliderconfi
         $newsitems[$discussion->id]['userdate'] = userdate($discussion->modified, $strftimerecent);
         $newsitems[$discussion->id]['userid'] = $discussion->userid;
         $newsitems[$discussion->id]['userpicture'] = $userpicture;
+        $newsitems[$discussion->id]['attachedimage'] = $attachedimages;
+        $newsitems[$discussion->id]['attachedimage_url'] = $attachedimages_url;
+        $newsitems[$discussion->id]['colour'] = $colour;
+        $newsitems[$discussion->id]['commentcount'] = $commentcount;
+        $newsitems[$discussion->id]['viewcount'] = $viewcount;
 
         // Check if message is pinned.
         if ($getpinnedposts == true) {
@@ -156,7 +207,7 @@ function news_slider_get_course_news($course, $getsitenews = false, $sliderconfi
  * @param stdClass  $considerhtml If the html make up tages should be ignored in the length to trim the text down to.
  * @return string
  */
-function news_slider_truncate_news($text, $length = 100, $ending = '...', $exact = false, $considerhtml = true) {
+function news_slider_plus_truncate_news($text, $length = 100, $ending = '...', $exact = false, $considerhtml = true) {
     if ($considerhtml) {
         // If the plain text is shorter than the maximum length, return the whole text.
         if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {

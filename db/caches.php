@@ -18,11 +18,11 @@
 /**
  * Moodle cache definitions
  *
- * @package block_news_slider
+ * @package block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
  * @copyright
  *
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license 
  *
  */
 

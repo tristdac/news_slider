@@ -1,8 +1,8 @@
 # README #
-moodle-block_news_slider
+moodle-block_news_slider_plus
 
-### Moodle News Slider ###
-A news slider that displays unread course announcements and site announcements.  Can also be used on course pages to show unread announcements for that specific course.
+### Moodle News Slider Plus ###
+A News Slider Plus that displays unread course announcements and site announcements.  Can also be used on course pages to show unread announcements for that specific course.
 
 
 # General configuration #
@@ -26,11 +26,11 @@ is switched on by default and set to expire every 5 minutes (300) for a user ses
 
 ## Using the slider on course pages ##
 
-There is custom block region on course pages in the Adaptable theme called "course page slider region", designed for use with the news slider.  
+There is custom block region on course pages in the Adaptable theme called "course page slider region", designed for use with the News Slider Plus.  
 See basic instructions below:
 
-1. Add the news slider to the "Course slider" block region that can be seen by admins on the frontpage.  Configure it to appear on all pages.
-2. Go to any course page. You should the news slider appear just above course content. Now configure this block to appear only on course pages.
+1. Add the News Slider Plus to the "Course slider" block region that can be seen by admins on the frontpage.  Configure it to appear on all pages.
+2. Go to any course page. You should the News Slider Plus appear just above course content. Now configure this block to appear only on course pages.
 
 # Version number #
 
@@ -38,12 +38,12 @@ Version 1.2 (2017121300)
 
 ### How do I get set up? ###
 
-Installs at <moodleroot>/blocks/news_slider
+Installs at <moodleroot>/blocks/news_slider_plus
 
 ## Settings ##
 
 Site-wide configuration options are available under: 
-Site Administration -> Plugins -> Blocks -> News slider
+Site Administration -> Plugins -> Blocks -> News Slider Plus
 
 Per Instance block settings are available by editing block configuration.
 
@@ -71,5 +71,4 @@ Co-maintained by:
  ### Licenses ###
 
 Adaptable is licensed under:
-GPL v3 (GNU General Public License) - http://www.gnu.org/licenses
-# news_slider
+GPL v3 (GNU General Public License) - 

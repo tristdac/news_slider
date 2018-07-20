@@ -17,17 +17,17 @@
 /**
  * Version details
  *
- * @package   block_news_slider
+ * @package   block_news_slider_plus
  * @copyright 2017 Manoj Solanki (Coventry University)
  * @copyright
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   
  *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 // Recommended since 2.0.2 (MDL-26035). Required since 3.0 (MDL-48494).
-$plugin->component = 'block_news_slider';
+$plugin->component = 'block_news_slider_plus';
 
 // YYYYMMDDHH (year, month, day, 24-hr time).
 $plugin->version = 2017121300;
@@ -35,7 +35,7 @@ $plugin->version = 2017121300;
 // YYYYMMDDHH (This is the release version for Moodle 3.2).
 $plugin->requires = 2016120500;
 
-$plugin->dependencies = array('theme_adaptable' => 2017053100);
+// $plugin->dependencies = array('theme_adaptable' => 2017053100);
 
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = "1.2";
